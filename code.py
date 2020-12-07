@@ -1,5 +1,6 @@
 # ESP01 Sensor
 # Light, Sound, Temperature
+# YELLOW ON LIGHT [3] IS ILLUMINATI PRESENCE ADMITTER
 
 import array
 import math
@@ -7,9 +8,11 @@ import time
  
 import audiobusio
 import board
-
+import pulseio
 
 from adafruit_circuitplayground import cp
+
+pulsein = pulseio.PulseIn(board.IR_RX, maxlen=120, idle_state=True)
 
 def mean(values):
     return sum(values) / len(values)
@@ -35,7 +38,7 @@ samples = array.array('H', [0] * 160)
 mic.record(samples, len(samples))
 
 while True:
-    time.sleep(0.1)
+    time.sleep(0.01)
     mic.record(samples, len(samples))
     magnitude = normalized_rms(samples)
     cp.pixels[0] = (0, int(magnitude), 0) # sound sensor
@@ -59,3 +62,5 @@ while True:
     cp.pixels[8] = (127, 127, 127)
     cp.pixels[9] = (255, 255, 255)
     # print("Slide switch:", cp.switch)
+    pulses = decoder.read_pulses(pulsein)
+    print(decr(pulses))

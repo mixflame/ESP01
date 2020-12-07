@@ -1,0 +1,7 @@
+{
+    "python.autoComplete.extraPaths": [
+        null,
+        "c:\\Users\\jsilv\\.vscode\\extensions\\joedevivo.vscode-circuitpython-0.1.3\\stubs",
+        "c:\\Users\\jsilv\\AppData\\Roaming\\Code\\User\\globalStorage\\joedevivo.vscode-circuitpython\\bundle\\20201107\\adafruit-circuitpython-bundle-py-20201205\\lib"
+    ]
+}
