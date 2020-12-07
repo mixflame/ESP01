@@ -41,6 +41,8 @@ while True:
     cp.pixels[0] = (0, int(magnitude), 0) # sound sensor
     cp.pixels[1] = (0, 0, int(cp.light)) # light sensor
     cp.pixels[2] = (int(cp.temperature), 0, 0)
+    if cp.switch:
+        cp.pixels[3] = (int(cp.light) * int(magnitude), int(cp.temperature) * int(cp.light), int(magnitude) * int(cp.temperature))
     if cp.shake(shake_threshold=20):
         print("Shake detected!")
         cp.red_led = True
@@ -56,3 +58,4 @@ while True:
     cp.pixels[7] = (63, 63, 63)
     cp.pixels[8] = (127, 127, 127)
     cp.pixels[9] = (255, 255, 255)
+    # print("Slide switch:", cp.switch)
