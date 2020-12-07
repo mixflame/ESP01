@@ -5,10 +5,12 @@
 import array
 import math
 import time
- 
+
 import audiobusio
 import board
 import pulseio
+import adafruit_irremote
+decoder = adafruit_irremote.GenericDecode()
 
 from adafruit_circuitplayground import cp
 
@@ -16,18 +18,18 @@ pulsein = pulseio.PulseIn(board.IR_RX, maxlen=120, idle_state=True)
 
 def mean(values):
     return sum(values) / len(values)
- 
- 
+
+
 def normalized_rms(values):
     minbuf = int(mean(values))
     sum_of_samples = sum(
         float(sample - minbuf) * (sample - minbuf)
         for sample in values
     )
- 
+
     return math.sqrt(sum_of_samples / len(values))
- 
- 
+
+
 mic = audiobusio.PDMIn(
     board.MICROPHONE_CLOCK,
     board.MICROPHONE_DATA,
@@ -36,6 +38,8 @@ mic = audiobusio.PDMIn(
 )
 samples = array.array('H', [0] * 160)
 mic.record(samples, len(samples))
+
+pulses = pulseio.PulseIn(board.D10, maxlen=200, idle_state=True)
 
 while True:
     time.sleep(0.01)
@@ -62,5 +66,10 @@ while True:
     cp.pixels[8] = (127, 127, 127)
     cp.pixels[9] = (255, 255, 255)
     # print("Slide switch:", cp.switch)
-    pulses = decoder.read_pulses(pulsein)
-    print(decr(pulses))
+    try:
+        pulses = decoder.read_pulses(pulsein)
+        # print(decr(pulses))
+        for i in pulses:
+            cp.pixels[9] = (i, i, i)
+    except RuntimeError:
+        print("error don't care")
